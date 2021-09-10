@@ -10,8 +10,7 @@ from django.db.models import Q
 
 # Create your views here.
 
-def store (request, category_slug=None):
-
+def store(request, category_slug = None):
     categories = None
     products = None
 
@@ -29,15 +28,16 @@ def store (request, category_slug=None):
         paged_products = paginator.get_page(page)
         product_count = products.count()
 
-    
     context = {
         'products': paged_products,
         'product_count': product_count,
+        
     }
+
     return render (request, 'store/store.html', context)
 
-def product_detail(request, category_slug, product_slug):
 
+def product_detail(request, category_slug, product_slug):
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug = product_slug)
         in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product = single_product).exists()
@@ -49,7 +49,7 @@ def product_detail(request, category_slug, product_slug):
         'single_product': single_product,
         'in_cart' : in_cart,
     }
-    return render (request, 'store/product_detail.html',context)
+    return render (request, 'store/product_detail.html', context)
 
 def search(request):
     if 'keyword' in request.GET:
